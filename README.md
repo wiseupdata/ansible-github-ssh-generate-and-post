@@ -1,4 +1,7 @@
 # **Generate the SSH keys and add to GitHub**
+> Version: 0.0.1
+
+<br> 
 
 Go to home directory👍
 
@@ -38,7 +41,7 @@ source ~/.bashrc
 cat ~/.bashrc
 ````
 
-Check the creation:
+Check the credentials:
 
 ```
 echo $GITHUB_PERSONAL_ACCESS_TOKEN
@@ -68,6 +71,18 @@ ansible-playbook site.yml -i inventory/hosts.yml -v --extra-vars 'sudo_pass=$SUD
 
 ![](assets/20230312_203343_image.png)
 
+## Check the portal again!
+
+![](assets/20230312_203539_image.png)
+
+# Credential created!❤️ 
+
+use git push and git clone with extra authentication.
+
 # Reference
 
 1. https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+
+
+# Debt Tech
+> This role can only run one time, in the second the GitHub api returns a error! This behavior will be fix in the nex version of this role.
