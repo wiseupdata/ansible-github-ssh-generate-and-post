@@ -1,0 +1,3 @@
+github_personal_access_token: "{{ ansible_env.GITHUB_PERSONAL_ACCESS_TOKEN }}"
+github_email: "{{ ansible_env.GITHUB_EMAIL }}"
+key_name: id_rsa_github

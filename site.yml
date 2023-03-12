@@ -1,0 +1,5 @@
+- name: Ansible Github SSH generate and post
+  hosts: localhost
+  connection: local
+  roles:
+    - generate-and-setup-github-ssh

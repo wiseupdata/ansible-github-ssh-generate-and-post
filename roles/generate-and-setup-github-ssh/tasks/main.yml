@@ -1,0 +1,50 @@
+- name: Check if SSH key exists
+  stat:
+    path: ~/.ssh/{{key_name}}
+  register: ssh_key_exists
+
+- name: Ensure SSH key exists
+  tags: ssh
+  ansible.builtin.shell: ssh-keygen -t rsa -b 4096 -C "{{ github_email }}" -N "" -f ~/.ssh/{{key_name}}
+  when: not ssh_key_exists.stat.exists
+
+- name: Print SSH public key
+  tags: ssh
+  ansible.builtin.shell: cat ~/.ssh/{{key_name}}.pub
+  register: ssh_key_output
+
+- name: Get existing SSH keys from GitHub
+  uri:
+    url: "https://api.github.com/user/keys"
+    method: GET
+    headers:
+      Accept: "application/vnd.github.v3+json"
+      Authorization: "Bearer {{ github_personal_access_token }}"
+      Content-Type: "application/json"
+    status_code: 200, 404
+  register: github_keys
+
+- name: Load public key from file
+  set_fact:
+    ssh_public_key: "{{ lookup('file', '~/.ssh/{{key_name}}.pub') }}"
+
+- name: Post SSH key to GitHub
+  uri:
+    url: https://api.github.com/user/keys
+    method: POST
+    headers:
+      Accept: application/vnd.github+json
+      Authorization: "Bearer {{ github_personal_access_token }}"
+    body_format: json
+    body:
+      title: "Ansible-generated SSH Key"
+      key: "{{ lookup('file', '~/.ssh/{{key_name}}.pub') }}"
+    return_content: yes
+    status_code: 201
+  register: github_ssh_key_response
+  # when: "'ssh-rsa ' + ssh_key.public_key not in github_keys.json | map(attribute='key') | list"
+
+- debug:
+    var: ssh_public_key
+
+
