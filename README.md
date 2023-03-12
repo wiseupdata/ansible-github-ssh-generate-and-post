@@ -1,5 +1,5 @@
 # **Generate the SSH keys and add to GitHub**
-> Version: 0.0.1
+> Version: v.0.0.1
 
 <br> 
 
